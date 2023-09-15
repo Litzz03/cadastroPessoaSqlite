@@ -11,3 +11,29 @@ export const initDatabase = () => {
         )
     })
 }
+
+export const addContact = (name, phone) => {
+
+    db.transaction( (conn) => {
+        conn.executeSql(
+            "INSERT INTO contacts (nome, telefone) VALUES (?, ?);",
+            [name, phone],
+            ( cb, result) => {console.log(result.insertId)},
+            ( cb, error ) => {console.log('ERROR' + error)}
+        )
+    })
+}
+
+export const getContacts = () => {
+
+    return new Promisse((resolve, reject) => {
+        db.transaction( (conn) => {
+            conn.executeSql(
+                "SELECT * FROM contacts",
+                [],
+                (cd, results) => {resolve(results.rows._array)},
+                (cd, error) => {reject(error)} 
+            )
+        })
+    })
+}

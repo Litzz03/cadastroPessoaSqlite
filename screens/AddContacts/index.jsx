@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {Alert, Button, Text, TextInput, View} from 'react-native'
 import { addContact } from '../../db/Database';
 
-export function AddContacts(){
+export function AddContacts(props){
 
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('')
@@ -10,9 +10,11 @@ export function AddContacts(){
     const handleAddContact = () => {
         if(name.trim() === '' || phone.trim() === ''){
             Alert.alert('Preencha os valores corretamente.')
+            return;
         }
 
         addContact(name, phone)
+        props.onRefreshList()
         setName('')
         setPhone('')
     }

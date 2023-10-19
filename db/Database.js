@@ -29,11 +29,24 @@ export const getContacts = () => {
     return new Promisse((resolve, reject) => {
         db.transaction( (conn) => {
             conn.executeSql(
-                "SELECT * FROM contacts",
+                "SELECT * FROM contacts; ",
                 [],
                 (cd, results) => {resolve(results.rows._array)},
                 (cd, error) => {reject(error)} 
             )
         })
     })
+}
+
+export const deleteContact = (id) => {
+    return new Promise((resolver, reject) => {
+        db.transaction((conn) => {
+            conn.executeSql(
+                'DELETE FROM contacts WHERE _id = ?; ',
+                [id],
+                () => resolve(),
+                (cb, error) => {reject(error)}
+            )
+        })
+    }) 
 }
